@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-IntegrationApplication<integration>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.mxr.integration.IntegrationApplication",
+      "projectName": "integration",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
