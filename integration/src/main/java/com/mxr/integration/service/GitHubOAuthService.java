@@ -56,8 +56,10 @@ public class GitHubOAuthService {
         String tokenUrl = "https://github.com/login/oauth/access_token" +
                 "?client_id=" + clientId +
                 "&client_secret=" + clientSecret +
-                "&code=" + code +
-                "&code_verifier=" + codeVerifier;
+                "&code=" + code;
+
+        if (codeVerifier != null) tokenUrl += "&code_verifier=" + codeVerifier;
+
 
         GitHubTokenResponse tokenResponse = restTemplate.postForObject(tokenUrl, null, GitHubTokenResponse.class);
 
