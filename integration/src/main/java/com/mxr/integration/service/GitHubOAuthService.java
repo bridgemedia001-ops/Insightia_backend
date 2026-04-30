@@ -44,12 +44,17 @@ public class GitHubOAuthService {
     }
 
     public String getGitHubAuthorizationUrl(String state, String codeChallenge) {
-        return "https://github.com/login/oauth/authorize" +
+        String url = "https://github.com/login/oauth/authorize" +
                 "?client_id=" + clientId +
                 "&redirect_uri=" + redirectUri +
-                "&state=" + state +
-                "&code_challenge=" + codeChallenge +
-                "&code_challenge_method=S256";
+                "&state=" + state;
+
+        if (codeChallenge != null && !codeChallenge.isEmpty()) {
+            url += "&code_challenge=" + codeChallenge +
+                    "&code_challenge_method=S256";
+        }
+    
+        return url;
     }
 
     public TokenResponse exchangeCodeForTokens(String code, String codeVerifier) {
