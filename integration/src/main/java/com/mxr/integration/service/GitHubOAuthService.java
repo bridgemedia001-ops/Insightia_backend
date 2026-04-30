@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.mxr.integration.dto.GitHubUserResponse;
@@ -61,6 +62,7 @@ public class GitHubOAuthService {
         return url;
     }
 
+    @Transactional
     public TokenResponse exchangeCodeForTokens(String code, String codeVerifier) {
         String tokenUrl = "https://github.com/login/oauth/access_token" +
                 "?client_id=" + clientId +
@@ -102,6 +104,7 @@ public class GitHubOAuthService {
                 GitHubUserResponse.class).getBody();
     }
 
+    @Transactional
     private User createOrUpdateUser(GitHubUserResponse githubUser) {
         Optional<User> existingUser = userRepository.findByGithubId(githubUser.getId().toString());
 
@@ -125,6 +128,7 @@ public class GitHubOAuthService {
         return userRepository.save(newUser);
     }
 
+    @Transactional
     private void saveRefreshToken(String token, String username) {
         refreshTokenRepository.deleteByUsername(username);
 
@@ -139,6 +143,7 @@ public class GitHubOAuthService {
         refreshTokenRepository.save(refreshToken);
     }
 
+    @Transactional
     public TokenResponse refreshAccessToken(String refreshToken) {
         Optional<RefreshToken> tokenOptional = refreshTokenRepository.findByToken(refreshToken);
 
@@ -176,6 +181,7 @@ public class GitHubOAuthService {
                 .build();
     }
 
+    @Transactional
     public void logout(String refreshToken) {
         Optional<RefreshToken> tokenOptional = refreshTokenRepository.findByToken(refreshToken);
 
