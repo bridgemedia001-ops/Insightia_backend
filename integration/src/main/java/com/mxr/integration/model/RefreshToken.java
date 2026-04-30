@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class RefreshToken {
         this.id = Generators.timeBasedEpochGenerator().generate();
     }
 
+    @Column(length = 512)
     private String token;
 
     private String username;
