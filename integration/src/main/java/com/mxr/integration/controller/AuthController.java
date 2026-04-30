@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @GetMapping("/auth/github")
-    public RedirectView githubLogin(@RequestParam String state, @RequestParam String code_challenge) {
+    public RedirectView githubLogin(@RequestParam(required = false, defaultValue = "web") String state, @RequestParam(required = false) String code_challenge) {
         String authUrl = gitHubOAuthService.getGitHubAuthorizationUrl(state, code_challenge);
         return new RedirectView(authUrl);
     }
