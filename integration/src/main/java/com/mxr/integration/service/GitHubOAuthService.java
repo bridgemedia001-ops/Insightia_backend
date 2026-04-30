@@ -72,7 +72,11 @@ public class GitHubOAuthService {
         if (codeVerifier != null)
             tokenUrl += "&code_verifier=" + codeVerifier;
 
-        GitHubTokenResponse tokenResponse = restTemplate.postForObject(tokenUrl, null, GitHubTokenResponse.class);
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.set("Accept", "application/json");
+        org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<>(headers);
+
+        GitHubTokenResponse tokenResponse = restTemplate.postForObject(tokenUrl, entity, GitHubTokenResponse.class);
 
         if (tokenResponse == null || tokenResponse.getAccess_token() == null) {
             throw new RuntimeException("Failed to exchange code for token");
