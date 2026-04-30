@@ -2,6 +2,7 @@ package com.mxr.integration.service;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class GitHubOAuthService {
     @Value("${github.redirect-uri}")
     private String redirectUri;
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -43,17 +47,17 @@ public class GitHubOAuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public String getGitHubAuthorizationUrl(String state, String codeChallenge) {
+    public String getFrontendUrl() {
+        return frontendUrl;
+    }
+
+    public String getGitHubAuthorizationUrl(String source) {
+        String state = source + "__" + UUID.randomUUID().toString();
         String url = "https://github.com/login/oauth/authorize" +
                 "?client_id=" + clientId +
                 "&redirect_uri=" + redirectUri +
                 "&state=" + state;
 
-        if (codeChallenge != null && !codeChallenge.isEmpty()) {
-            url += "&code_challenge=" + codeChallenge +
-                    "&code_challenge_method=S256";
-        }
-    
         return url;
     }
 
@@ -63,8 +67,8 @@ public class GitHubOAuthService {
                 "&client_secret=" + clientSecret +
                 "&code=" + code;
 
-        if (codeVerifier != null) tokenUrl += "&code_verifier=" + codeVerifier;
-
+        if (codeVerifier != null)
+            tokenUrl += "&code_verifier=" + codeVerifier;
 
         GitHubTokenResponse tokenResponse = restTemplate.postForObject(tokenUrl, null, GitHubTokenResponse.class);
 
@@ -180,6 +184,10 @@ public class GitHubOAuthService {
             token.setRevoked(true);
             refreshTokenRepository.save(token);
         }
+    }
+
+    public String extractUsernameFromToken(String token) {
+        return jwtUtil.extractUsername(token);
     }
 
     @Data

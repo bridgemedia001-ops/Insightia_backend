@@ -18,7 +18,11 @@ public class CorsConfig {
         config.applyPermitDefaultValues();
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
-         config.addAllowedOriginPattern("*");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedOrigin("https://insightawebportal-production.up.railway.app");
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
