@@ -1,13 +1,12 @@
 package com.mxr.integration.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-
-
 
 @Configuration
 public class CorsConfig {
@@ -21,7 +20,7 @@ public class CorsConfig {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
-        config.addAllowedOrigin("https://insightawebportal-production.up.railway.app");
+        config.setAllowedOriginPatterns(List.of("https://insightawebportal-production.up.railway.app"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -29,6 +28,5 @@ public class CorsConfig {
 
         return new CorsFilter(source);
     }
-
 
 }
