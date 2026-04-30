@@ -1,5 +1,6 @@
 package com.mxr.integration.controller;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpCookie;
@@ -37,6 +38,12 @@ public class AuthController {
     public RedirectView githubLogin(@RequestParam(required = false, defaultValue = "web") String source) {
         String authUrl = gitHubOAuthService.getGitHubAuthorizationUrl(source);
         return new RedirectView(authUrl);
+    }
+
+    @GetMapping("/auth/github/url")
+    public ResponseEntity<?> getGitHubAuthUrl(@RequestParam(required = false, defaultValue = "cli") String source) {
+        String authUrl = gitHubOAuthService.getGitHubAuthorizationUrl(source);
+        return ResponseEntity.ok(Map.of("auth_url", authUrl));
     }
 
     @GetMapping("/auth/github/callback")
