@@ -51,7 +51,6 @@ public class AuthController {
         TokenResponse response = gitHubOAuthService.exchangeCodeForTokens(code, null);
 
         if (state.startsWith("web__")) {
-            // Web flow: set cookies and redirect to dashboard
             ResponseCookie accessTokenCookie = ResponseCookie.from("access_token", response.getAccess_token())
                     .httpOnly(true)
                     .secure(true)

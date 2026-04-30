@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -25,21 +26,25 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final ApiVersionFilter apiVersionFilter;
     private final RateLimitFilter rateLimitFilter;
     private final RequestLoggingFilter requestLoggingFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
             RoleAuthorizationFilter roleAuthorizationFilter, ApiVersionFilter apiVersionFilter,
-            RateLimitFilter rateLimitFilter, RequestLoggingFilter requestLoggingFilter) {
+            RateLimitFilter rateLimitFilter, RequestLoggingFilter requestLoggingFilter,
+            CorsConfigurationSource corsConfigurationSource) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.roleAuthorizationFilter = roleAuthorizationFilter;
         this.apiVersionFilter = apiVersionFilter;
         this.rateLimitFilter = rateLimitFilter;
         this.requestLoggingFilter = requestLoggingFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
