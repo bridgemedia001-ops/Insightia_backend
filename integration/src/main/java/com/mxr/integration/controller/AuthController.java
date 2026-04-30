@@ -49,12 +49,14 @@ public class AuthController {
                     .httpOnly(true)
                     .secure(true)
                     .path("/")
+                    .sameSite("None")
                     .maxAge(180)
                     .build();
             ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", response.getRefresh_token())
                     .httpOnly(true)
                     .secure(true)
                     .path("/")
+                    .sameSite("None")
                     .maxAge(300)
                     .build();
 
@@ -141,12 +143,14 @@ public class AuthController {
                         .httpOnly(true)
                         .secure(true)
                         .path("/")
+                        .sameSite("None")
                         .maxAge(180)
                         .build();
                 ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", response.getRefresh_token())
                         .httpOnly(true)
                         .secure(true)
                         .path("/")
+                        .sameSite("None")
                         .maxAge(300)
                         .build();
 
@@ -185,12 +189,14 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .sameSite("None")
                 .maxAge(0)
                 .build();
         ResponseCookie clearedAccessCookie = ResponseCookie.from("access_token", "")
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .sameSite("None")
                 .maxAge(0)
                 .build();
 
