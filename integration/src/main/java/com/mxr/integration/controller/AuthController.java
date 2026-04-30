@@ -31,10 +31,6 @@ public class AuthController {
     @GetMapping("/auth/github/callback")
     public ResponseEntity<TokenResponse> githubCallback(@RequestParam String code,
             @RequestParam String state, @RequestParam(required = false) String code_verifier) {
-        if (code_verifier == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
         TokenResponse response = gitHubOAuthService.exchangeCodeForTokens(code, code_verifier);
         return ResponseEntity.ok(response);
     }
