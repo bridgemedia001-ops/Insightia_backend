@@ -52,11 +52,11 @@ public class GitHubOAuthService {
                 "&code_challenge_method=S256";
     }
 
-    public TokenResponse exchangeCodeForTokens(String codeVerifier) {
+    public TokenResponse exchangeCodeForTokens(String code, String codeVerifier) {
         String tokenUrl = "https://github.com/login/oauth/access_token" +
                 "?client_id=" + clientId +
                 "&client_secret=" + clientSecret +
-                // "&code=" + code +
+                "&code=" + code +
                 "&code_verifier=" + codeVerifier;
 
         GitHubTokenResponse tokenResponse = restTemplate.postForObject(tokenUrl, null, GitHubTokenResponse.class);

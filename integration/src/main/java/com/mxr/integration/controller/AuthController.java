@@ -35,7 +35,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        TokenResponse response = gitHubOAuthService.exchangeCodeForTokens(code_verifier);
+        TokenResponse response = gitHubOAuthService.exchangeCodeForTokens(code, code_verifier);
         return ResponseEntity.ok(response);
     }
 
